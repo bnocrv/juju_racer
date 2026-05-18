@@ -784,8 +784,9 @@ function drawStartScreen() {
     drawBackground();
   }
   ctx.textAlign = "center";
-  drawOutlinedText("TOQUE OU APERTE ESPAÇO PARA COMEÇAR", W / 2, 330, gameFont(24), "#ffdd42", 4);
-  drawOutlinedText("Espaço/toque pula  •  T usa turbo  •  H mostra hitboxes", W / 2, 362, gameFont(15, 800), "#fff", 3);
+  drawOutlinedText("TOQUE PARA COMEÇAR", W / 2, 320, gameFont(24), "#ffdd42", 4);
+  drawOutlinedText("OU APERTE ESPAÇO", W / 2, 350, gameFont(20), "#ffdd42", 4);
+  drawOutlinedText("Pular: espaço/toque  •  Turbo: T  •  Hitbox: H", W / 2, 376, gameFont(13, 800), "#fff", 3);
   ctx.textAlign = "left";
 }
 
