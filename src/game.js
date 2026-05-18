@@ -8,6 +8,7 @@ const GRAVITY = 0.76;
 const JUMP_FORCE = -18.1;
 const MAX_FALL = 16;
 const FONT_FAMILY = '"Arial Black", "Trebuchet MS", Arial, sans-serif';
+const restartButton = { x: 285, y: 315, w: 230, h: 44 };
 
 // AJUSTE DE VOLUMES: mexa aqui para balancear os sons do jogo.
 // Valores de 0.0 a 1.0.
@@ -131,10 +132,19 @@ window.addEventListener("keydown", (event) => {
 
 canvas.addEventListener("pointerdown", (event) => {
   beginAudio();
-  if (game.state !== "playing") {
+  if (game.state === "over") {
+    const point = getCanvasPoint(event);
+    if (point.x >= restartButton.x && point.x <= restartButton.x + restartButton.w
+      && point.y >= restartButton.y && point.y <= restartButton.y + restartButton.h) {
+      startGame();
+    }
+    return;
+  }
+  if (game.state === "start") {
     startGame();
     return;
   }
+  if (game.state !== "playing") return;
   canvas.dataset.touchY = event.clientY;
   canvas.dataset.touchX = event.clientX;
 });
@@ -165,6 +175,14 @@ function resize() {
   canvas.width = Math.round(rect.width * dpr);
   canvas.height = Math.round(rect.height * dpr);
   ctx.setTransform(canvas.width / W, 0, 0, canvas.height / H, 0, 0);
+}
+
+function getCanvasPoint(event) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (event.clientX - rect.left) * W / rect.width,
+    y: (event.clientY - rect.top) * H / rect.height,
+  };
 }
 
 function loadImage(src) {
@@ -420,6 +438,7 @@ function getObstacleBox(obstacle) {
 }
 
 function draw() {
+  document.body.dataset.gameState = game.state;
   ctx.save();
   if (game.state === "playing" && game.shake > 0) {
     ctx.translate((Math.random() - 0.5) * game.shake, (Math.random() - 0.5) * game.shake * 0.45);
@@ -725,7 +744,7 @@ function drawCoin(coin) {
 
 function drawHud() {
   ctx.fillStyle = "rgba(5, 8, 16, 0.72)";
-  roundRect(14, 12, 206, 54, 8);
+  roundRect(14, 12, 244, 58, 8);
   ctx.fill();
   if (images.avatar) {
     ctx.save();
@@ -738,8 +757,8 @@ function drawHud() {
     roundRect(22, 18, 40, 40, 8);
     ctx.stroke();
   }
-  drawOutlinedText("JULIANA", 72, 34, gameFont(18), "#fff", 3);
-  drawOutlinedText(`♥ ${game.lives}`, 72, 56, gameFont(18), "#ff5570", 3);
+  drawOutlinedText("JULIANA/HELOÍSA", 72, 34, gameFont(16), "#fff", 3);
+  drawOutlinedText(`♥ ${game.lives}`, 72, 60, gameFont(24), "#ff5570", 3);
   if (cleanCoinIcon) ctx.drawImage(cleanCoinIcon, 586, 16, 28, 28);
   drawOutlinedText(`MOEDAS ${game.coins}`, 620, 38, gameFont(18), "#ffdc44", 3);
   drawOutlinedText(`SCORE ${String(game.score).padStart(5, "0")}`, 620, 66, gameFont(18), "#fff", 3);
@@ -803,15 +822,23 @@ function drawGameOver() {
     ["JULIANA", 765310],
   ];
   ctx.fillStyle = "rgba(7, 10, 20, 0.82)";
-  roundRect(220, 145, 360, 150, 10);
+  roundRect(220, 145, 360, 140, 10);
   ctx.fill();
   drawOutlinedText("RANKING", W / 2, 178, gameFont(24), "#ff65aa", 4);
   ranking.forEach(([name, score], index) => {
-    const y = 212 + index * 34;
+    const y = 210 + index * 31;
     drawOutlinedText(`${index + 1}. ${name}`, 270, y, gameFont(20), "#fff", 3, "left");
     drawOutlinedText(String(score), 530, y, gameFont(20), "#ffdd42", 3, "right");
   });
-  drawOutlinedText("Toque ou aperte R para recomeçar", W / 2, 337, gameFont(17, 800), "#dbe8ff", 3);
+  ctx.fillStyle = "rgba(255, 221, 66, 0.95)";
+  roundRect(restartButton.x, restartButton.y, restartButton.w, restartButton.h, 8);
+  ctx.fill();
+  ctx.strokeStyle = "#05060a";
+  ctx.lineWidth = 3;
+  roundRect(restartButton.x, restartButton.y, restartButton.w, restartButton.h, 8);
+  ctx.stroke();
+  drawOutlinedText("TENTAR NOVAMENTE", W / 2, restartButton.y + 29, gameFont(18), "#101018", 0, "center");
+  drawOutlinedText("Ou aperte R para recomeçar", W / 2, 382, gameFont(14, 800), "#dbe8ff", 3);
   ctx.textAlign = "left";
 }
 

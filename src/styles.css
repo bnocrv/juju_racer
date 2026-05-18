@@ -94,6 +94,12 @@ body {
     bottom: max(12px, env(safe-area-inset-bottom));
   }
 
+  body[data-game-state="start"] .mobile-controls,
+  body[data-game-state="paused"] .mobile-controls,
+  body[data-game-state="over"] .mobile-controls {
+    display: none;
+  }
+
   .mobile-controls button {
     min-width: min(30vw, 108px);
     height: 48px;
