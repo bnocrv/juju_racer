@@ -89,15 +89,16 @@ body {
 
   .mobile-controls {
     display: flex;
-    left: max(14px, env(safe-area-inset-left));
-    right: max(14px, env(safe-area-inset-right));
-    bottom: max(18px, env(safe-area-inset-bottom));
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
   }
 
   .mobile-controls button {
-    min-width: min(36vw, 132px);
-    height: 62px;
-    font-size: 22px;
+    min-width: min(30vw, 108px);
+    height: 48px;
+    font-size: 18px;
+    border-width: 1.5px;
     background: rgba(8, 12, 22, 0.78);
   }
 }

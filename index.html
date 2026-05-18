@@ -3,7 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#13091f">
+    <meta name="description" content="Juju Racer: ajude Juliana e Heloísa a chegarem na escola em um endless runner de moto.">
     <title>Juju Racer</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/generated/juju-avatar-v4.png">
+    <link rel="apple-touch-icon" href="assets/generated/juju-app-icon.png">
     <link rel="stylesheet" href="src/styles.css">
   </head>
   <body>
@@ -15,5 +20,12 @@
       </div>
     </main>
     <script src="src/game.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("service-worker.js").catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>
